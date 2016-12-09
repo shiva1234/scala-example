@@ -53,18 +53,44 @@ val beginOfReportPeriod = format.parse(beginOfReportPrd(mnth))
 val endOfReportPeriod = format.parse(endOfReportPrd(mnth))
 println(beginOfReportPeriod)
 
-       /*sqlContext.udf.register("addDays", (word: Integer) => {
+       sqlContext.udf.register("addDays", (word: Integer) => {
        if (word == 19) 19 else 0
-      })*/
+      })
     // SQL statements can be run by using the sql methods provided by sqlContext.
-    val teenagers = sqlContext.sql("SELECT name FROM people WHERE age = 15")
-    
+    val teenagers = sqlContext.sql("SELECT name, age FROM people WHERE age < 17")
+    println(teenagers.collect().apply(0).get(0))
+    println(teenagers.count)
+    var median=0.00
+    if(teenagers.count>0){
+      val coll: Array[Any] =teenagers.rdd.map(r => r(1)).collect()
+      val intArr:Array[Int] = coll.map(_.toString).map(_.toInt)
+      println(intArr.length)
+if((intArr.length/2)*2==intArr.length){
+  println("is even")
+  median=intArr.apply(intArr.length/2)
+
+}else {
+  val a=((intArr.length/2)+0.5).toInt
+  val b=((intArr.length/2)-0.5).toInt
+  median=(intArr.apply(a)+intArr.apply(b))/2
+  println("is odd")
+}
+      println(median)
+    }
+    /*val coll: Array[Any] =teenagers.rdd.map(r => r(1)).collect()
+    val intArr:Array[Int] = coll.map(_.toString).map(_.toInt)
+    intArr.foreach(println)*/
+    //val sorted = intArr.sort
+    //val median = (sorted(array.length/2) + sorted(array.length - array.length/2)) / 2
+    //println(median)
+    //println(teenagers.count)
     teenagers.registerTempTable("teenagers")
-    var x = teenagers.collect().map(r => r.mkString(",")).head+","+
+    /*var x = teenagers.collect().map(r => r.mkString(",")).head+","+
     		         teenagers.collect().map(r => r.mkString(",")).head
-    println(x)
-    val arrayed =  Array(teenagers.collect().apply(0).get(0), teenagers.collect().apply(0).get(0), teenagers.collect().apply(0).get(0), teenagers.collect().apply(0).get(0))
-      println(arrayed.mkString(","))
+    println(x)*/
+    val arrayed =  Array(teenagers.collect().apply(0).get(0), teenagers.collect().apply(1).get(0), teenagers.collect().apply(2).get(0), teenagers.collect().apply(0).get(0))
+      //println(arrayed.mkString(","))
+    arrayed.foreach(println)
     //arrayed.foreach(println)
     //val alternative = arrayed.reduce((s1, s2) => s1 + ", " + s2)
     //println(alternative)
