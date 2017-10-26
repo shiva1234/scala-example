@@ -7,14 +7,12 @@ package gov.dol.edrvs.scala_example
 
 import java.text.SimpleDateFormat
 import java.util
-
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
-import org.apache.avro.generic.GenericData.StringType
 import org.apache.spark.sql.DataFrame
 import java.io.File
 import java.sql.Date
-import java.util.Calendar
+
 import org.apache.spark.sql.{SQLContext, Row}
 
 object AggregationRules {

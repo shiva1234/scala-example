@@ -23,7 +23,8 @@ object TestCSV {
     println("Hello World!")
     println("concat arguments = " + foo(args))
 
-    var conf = new SparkConf().setAppName("WordCount").setMaster("local");
+    var conf = new SparkConf().setAppName("WordCount").setMaster("local").set("spark.sql.warehouse.dir","C:\\spark-warehouse");
+    System.setProperty("hadoop.home.dir","C:\\winutils\\")
     var sc = new SparkContext(conf);
 
     // sc is an existing SparkContext.

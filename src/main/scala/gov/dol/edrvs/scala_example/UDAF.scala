@@ -9,8 +9,10 @@ object UDAF {
     System.setProperty("hadoop.home.dir","C:\\winutils\\")
     val ids = spark.range(1, 20)
     ids.registerTempTable("ids")
+
     val df = spark.sql("select id, id % 3 as group_id from ids")
     df.registerTempTable("simple")
+    println(df("id"))
     df.show()
     spark.udf.register("gm", new GeometricMean)
     val df1 = spark.sql("select group_id, gm(id) from simple group by group_id")
